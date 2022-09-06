@@ -31,8 +31,9 @@ int dataLoad(struct Event **headerPointer, char *fileName) {
         }
 
         fclose(filePointer);
+        return 0;
     } else {
         printf("Impossível abrir o arquivo.\n");
-        return 0;
+        return 1;
     }
 }
