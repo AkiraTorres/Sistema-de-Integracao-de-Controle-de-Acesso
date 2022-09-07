@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../headers/dataByCard.h"
 #include "../headers/eventData.h"
 #include "../headers/writeData.h"
 
@@ -8,37 +9,34 @@ struct Event;
 
 int searchContradictions(struct Event **headerPointer) {
     if (*headerPointer != NULL) {
-        struct Event *currentEvent = *headerPointer;
-        struct Event *nextCardEvent = currentEvent->next;
+        struct Event *checkingCode = *headerPointer;
         struct Event *contradictions = NULL;
 
-        while (currentEvent->next != NULL) {
-            while (nextCardEvent->cardCode != currentEvent->cardCode && nextCardEvent->next != NULL) {
-                nextCardEvent = nextCardEvent->next;
+        while (checkingCode->next != NULL) {
+            struct Event *nextCode = checkingCode->next;
+            while ((checkingCode->cardCode != nextCode->cardCode) && (nextCode->next != NULL)) {
+                nextCode = nextCode->next;
             }
-            if (nextCardEvent->eventType == currentEvent->eventType) {
-                int date = nextCardEvent->date, cardCode = nextCardEvent->cardCode, gateCode = nextCardEvent->gateCode;
-                char eventType;
-                if (nextCardEvent->eventType == 'E') {
-                    eventType = 'A';
-                } else {
-                    eventType = 'B';
-                }
-                struct Event *newContradiction = newEvent(date, cardCode, gateCode, eventType);
+            if ((checkingCode->eventType == nextCode->eventType) && (checkingCode->cardCode == nextCode->cardCode)) {
+                // printf("%i - %i\n", checkingCode->cardCode, nextCode->cardCode);
+                char type = checkingCode->eventType == 'E' ? 'A' : 'B';
+                struct Event *newContradiction = newEvent(nextCode->date, nextCode->cardCode, nextCode->gateCode, type);
                 if (contradictions == NULL) {
                     contradictions = newContradiction;
                 } else {
-                    while (contradictions->next != NULL) {
-                        contradictions = contradictions->next;
+                    struct Event *currentContradiction = contradictions;
+                    while (currentContradiction->next != NULL) {
+                        currentContradiction = currentContradiction->next;
                     }
-                    contradictions->next = newContradiction;
+                    currentContradiction->next = newContradiction;
+                    free(newContradiction);
                 }
-                free(newContradiction);
             }
-            currentEvent = currentEvent->next;
+
+            checkingCode = checkingCode->next;
         }
 
-        writeData(&contradictions, "../data/inconsistencias.csv");
+        writeData(&contradictions, "../data/output/inconsistencias.csv");
         free(contradictions);
     } else {
         printf("O log está vazio!\n");

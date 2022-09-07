@@ -13,7 +13,7 @@ struct Event {
 };
 
 struct Event* newEvent(int date, int cardCode, int gateCode, char eventType) {
-    struct Event *event = malloc(sizeof(struct Event));
+    struct Event* event = malloc(sizeof(struct Event));
 
     event->date = date;
     event->cardCode = cardCode;

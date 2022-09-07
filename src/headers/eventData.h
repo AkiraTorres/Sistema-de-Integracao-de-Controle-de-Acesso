@@ -16,4 +16,4 @@ struct Event {
 
 struct Event* newEvent(int date, int cardCode, int gateCode, char eventType);
 
-#endif //SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H
+#endif  // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H

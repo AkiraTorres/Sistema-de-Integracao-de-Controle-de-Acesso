@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "headers/dataByCard.h"
 #include "headers/dataLoad.h"
 #include "headers/eventData.h"
 #include "headers/genericFunctions.h"
@@ -8,8 +10,6 @@
 #include "headers/searchContradictions.h"
 #include "headers/undoLoad.h"
 #include "headers/writeData.h"
-// #include "headers/dataByCard.h"
-// #include "headers/undoLoad.h"
 
 int main() {
     struct Event *headerPointer = NULL;
@@ -30,39 +30,36 @@ int main() {
                 printf("Digite o caminho relativo do arquivo que será lido [../data/example-file.csv]: ");
                 scanf(" %s", filename);
                 dataLoad(&headerPointer, filename);
-                writeData(&headerPointer, "../data/log.csv");
+                writeData(&headerPointer, "../data/output/log.csv");
                 saveLastLoad(filename);
                 break;
             }
             case 2: {
                 clearShell();
-                // undoLoad(&headerPointer);
+                undoLoad(&headerPointer);
                 break;
             }
             case 3: {
                 clearShell();
-                searchContradictions(&headerPointer);
-                // writeData(&contradictions, "../data/inconsistencias.csv");
+                (&headerPointer);
                 break;
             }
             case 4: {
                 clearShell();
                 int cardID;
+                struct Event *headerReportByCard = NULL;
                 printf("Digite o id do cartão do usuário que deseja o log: ");
-                // scanf(" %i", cardID);
-                // dataByCard(&headerPointer, cardID);
-                break;
-            }
-            case 5: {
-                clearShell();
-                struct Event *currentEvent = headerPointer;
-                if (currentEvent == NULL) {
-                    printf("A lista está vazia!\n");
-                }
-                while (currentEvent != NULL) {
-                    printf("%d - %d - %d - %c\n", currentEvent->date, currentEvent->cardCode, currentEvent->gateCode, currentEvent->eventType);
-                    currentEvent = currentEvent->next;
-                }
+                scanf(" %i", &cardID);
+
+                dataByCard(&headerPointer, &headerReportByCard, cardID);
+
+                char str[5];
+                char path[] = "../data/output/";
+                sprintf(str, "%d", cardID);
+                char prefix[20];
+                sprintf(prefix, "%s%s%s", path, str, ".csv");
+                writeData(&headerReportByCard, prefix);
+                free(headerReportByCard);
                 break;
             }
             case 0: {

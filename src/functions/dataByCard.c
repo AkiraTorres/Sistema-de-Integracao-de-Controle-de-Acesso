@@ -4,28 +4,24 @@
 
 struct Event;
 
-int dataByCard(struct Event **headerPointer, int cardID) {
+int dataByCard(struct Event **headerPointer, struct Event **headerReportByCard, int cardID) {
     struct Event *currentEvent = *headerPointer;
-    while (!feof(currentEvent)) {
-        // feof é usando quando lendo um arquivo, aqui a gente tá tratando
-        // diretamente com a lista, não precisa disso, só de um if pra conferir
-        // se o *headerPointer é diferente de NULL
 
+    while (currentEvent->next != NULL) {
         if (currentEvent->cardCode == cardID) {
-            printf(currentEvent);
-            // a gente não quer imprimir os dados do cartão, mas sim salvar eles
-            // num arquivo csv, o ideal acho que seria salvar todos eles em uma
-            // nova lista, e depois mandar essa lista na função writeData e por
-            // último dar o free nessa lista
-        } else {
-            // esse else ficaria pro if que confere o headerPointer, tudo o que
-            // ele precisaria fazer seria imprimir no terminal que o arquivo de
-            // log está vazio
-            struct Event *nextEvent = currentEvent->next;
-            while ((currentEvent->next != NULL)) {
-                currentEvent = currentEvent->next;
-                nextEvent = currentEvent->next;
+            struct Event *currentReport = *headerReportByCard;
+            struct Event *newCard = newEvent(currentEvent->date, currentEvent->cardCode, currentEvent->gateCode, currentEvent->eventType);
+
+            if (*headerReportByCard == NULL) {
+                *headerReportByCard = newCard;
+            } else {
+                while (currentReport->next != NULL) {
+                    currentReport = currentReport->next;
+                }
+                currentReport->next = newCard;
             }
         }
+        currentEvent = currentEvent->next;
     }
+    return 0;
 }

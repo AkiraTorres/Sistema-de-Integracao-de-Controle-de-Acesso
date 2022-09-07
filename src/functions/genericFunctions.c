@@ -45,7 +45,7 @@ int saveLastLoad(char *fileName) {
             }
         }
         fclose(filePointer);
-        writeData(&header, "../data/lastLoad.csv");
+        writeData(&header, "../data/output/lastLoad.csv");
         free(header);
 
         return 0;
@@ -53,4 +53,18 @@ int saveLastLoad(char *fileName) {
         printf("Impossível abrir o arquivo.\n");
         return 1;
     }
+}
+
+int isEqualEvents(struct Event *eventOne, struct Event *eventTwo) {
+    if (eventOne->date == eventTwo->date) {
+        if (eventOne->cardCode == eventTwo->cardCode) {
+            if (eventOne->gateCode == eventTwo->gateCode) {
+                if (eventOne->eventType == eventTwo->eventType) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    return 0;
 }

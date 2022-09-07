@@ -5,6 +5,10 @@
 #ifndef SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATABYCARD_H
 #define SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATABYCARD_H
 
-int dataByCard(struct Event **headerPointer, int cardID);
+#include "eventData.h"
+
+struct Event;
+
+int dataByCard(struct Event **headerPointer, struct Event **headerReportByCard, int cardID);
 
 #endif  // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATABYCARD_H

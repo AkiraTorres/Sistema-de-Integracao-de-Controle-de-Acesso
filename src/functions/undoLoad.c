@@ -1,43 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// a ideia para a undoLoad acho que seria já pegar automaticamente a lista do
-// headerPointer, que é a lista do log geral, e ele pegar o último arquivo adicionado,
-// aí ele sair passando e deletando tudo isso da lista, no final seria apenas chamar
-// a função writeData de novo, passando o caminho do log.csv e o headerPointer, e
-// então a função vai escrever a lista nova, que acabou de ter a última carga removida
-int undoLoad(char *fileNameLog, char *fileNameLastLoad) {
-    FILE *filePointerLog = fopen(fileNameLog, "w");
-    FILE *filePointerLastLoad = fopen(fileNameLastLoad, "r");
+#include "../headers/eventData.h"
+#include "../headers/genericFunctions.h"
+#include "../headers/writeData.h"
 
-    if (filePointerLog != NULL && filePointerLastLoad != NULL) {
+struct Event;
+
+int undoLoad(struct Event **headerPointer) {
+    FILE *pontLastLoad = fopen("../data/lastLoad.csv", "r");
+
+    if ((pontLastLoad != NULL)) {
         char *pontLineLastLoad = NULL;
         size_t len = 0;
+        while (!feof(pontLastLoad)) {
+            struct Event *current = *headerPointer;
+            struct Event *previous = NULL;
 
-        // usando o método que eu disse acima, não precisaria ficar lendo e editando
-        // os dois arquivos de texto ao mesmo tempo, seria apenas editar a lista e
-        // no final escrever ela no log.csv
-        while (!feof(filePointerLastLoad)) {
-            char *pontLineLog = NULL;
-            size_t len = 0;
+            int date, cardCode, gateCode;
+            char eventType;
 
-            while (!feof(filePointerLog)) {
-                if (getline(&pontLineLastLoad, &len, filePointerLastLoad) == getline(&pontLineLog, &len, filePointerLog)) {
-                    *pontLineLog = "";
+            fscanf(pontLastLoad, "%i;%i;%i;%c\n", &date, &cardCode, &gateCode, &eventType);
+
+            struct Event *currentLine = newEvent(date, cardCode, gateCode, eventType);
+
+            while (current->next != NULL) {
+                if (isEqualEvents(current, currentLine)) {
+                    if (previous == NULL) {
+                        *headerPointer = current->next;
+                    } else {
+                        previous->next = current->next;
+                    }
+                } else {
+                    previous = current;
+                }
+                current = current->next;
+            }
+
+            if (isEqualEvents(current, currentLine)) {
+                if (isEqualEvents(*headerPointer, current)) {
+                    *headerPointer = NULL;
+                    break;
+                } else {
+                    previous->next = NULL;
                 }
             }
-
-            if (pontLineLog) {
-                free(pontLineLog);
-            }
-            fclose(filePointerLog);
         }
 
-        if (pontLineLastLoad) {
-            free(pontLineLastLoad);
-        }
-        fclose(filePointerLastLoad);
+        struct Event *nullable = NULL;
+        writeData(headerPointer, "../data/output/log.csv");
+        writeData(&nullable, "../data/output/lastLoad.csv");
+        free(nullable);
+        fclose(pontLastLoad);
     } else {
-        printf("Impossível abrir o arquivo");
+        printf("Impossível abrir o arquivo!");
     }
 }

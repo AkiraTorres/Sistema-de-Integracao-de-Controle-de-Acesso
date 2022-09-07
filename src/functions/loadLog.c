@@ -4,15 +4,15 @@
 
 #include <stdio.h>
 
-#include "../headers/eventData.h"
 #include "../headers/dataLoad.h"
+#include "../headers/eventData.h"
 
 struct Event;
 
 int loadLog(struct Event **headerPointer) {
-    FILE *filePointer = fopen("../data/log.csv", "r");
+    FILE *filePointer = fopen("../data/output/log.csv", "r");
     if (filePointer != NULL) {
-        dataLoad(headerPointer, "../data/log.csv");
+        dataLoad(headerPointer, "../data/output/log.csv");
         return 0;
     } else {
         return 1;

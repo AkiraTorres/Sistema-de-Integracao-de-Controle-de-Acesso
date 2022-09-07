@@ -27,7 +27,11 @@ int writeData(struct Event **headPointer, char *fileName) {
         fclose(filePointer);
         return 0;
     } else {
-        printf("Nenhum log foi adicionado.\n");
-        return 1;
+        FILE *filePointer = fopen(fileName, "w+");
+
+        fprintf(filePointer, "");
+
+        fclose(filePointer);
+        return 0;
     }
 }
