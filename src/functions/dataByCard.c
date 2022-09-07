@@ -4,7 +4,7 @@
 // Imports modules
 #include "../headers/eventData.h"
 
-struct Event; // Extends the struct for the module
+struct Event;  // Extends the struct for the module
 
 /*
     @authors: Akira, AsTunO
@@ -13,25 +13,18 @@ struct Event; // Extends the struct for the module
     @param cardID: A card code
     @return: state of the function
 */
-int dataByCard(struct Event **headerPointer, struct Event **headerReportByCard, int cardID)
-{
+int dataByCard(struct Event **headerPointer, struct Event **headerReportByCard, int cardID) {
     struct Event *currentEvent = *headerPointer;
 
-    while (currentEvent->next != NULL) // Verify if there's a next currentEvent
-    {
-        if (currentEvent->cardCode == cardID)
-        {
-            struct Event *currentReport = *headerReportByCard;                                                                             // Creat a new pointer for the header
-            struct Event *newCard = newEvent(currentEvent->date, currentEvent->cardCode, currentEvent->gateCode, currentEvent->eventType); // Creat a new pointer with the data
+    while (currentEvent->next != NULL) {  // Verify if there's a next currentEvent
+        if (currentEvent->cardCode == cardID) {
+            struct Event *currentReport = *headerReportByCard;                                                                              // Creat a new pointer for the header
+            struct Event *newCard = newEvent(currentEvent->date, currentEvent->cardCode, currentEvent->gateCode, currentEvent->eventType);  // Creat a new pointer with the data
 
-            if (*headerReportByCard == NULL)
-            {
-                *headerReportByCard = newCard; // Get the new value of the header of the new dynamic list
-            }
-            else // Get the next values
-            {
-                while (currentReport->next != NULL)
-                {
+            if (*headerReportByCard == NULL) {
+                *headerReportByCard = newCard;  // Get the new value of the header of the new dynamic list
+            } else {                            // Get the next values
+                while (currentReport->next != NULL) {
                     currentReport = currentReport->next;
                 }
                 currentReport->next = newCard;

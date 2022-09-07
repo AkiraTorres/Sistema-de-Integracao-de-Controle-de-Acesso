@@ -6,11 +6,10 @@
 #include "../headers/eventData.h"
 #include "../headers/writeData.h"
 
-struct Event; // Extends the struct for the module
+struct Event;  // Extends the struct for the module
 
 // Identify the SO to use the correct command in the terminal
-int clearShell()
-{
+int clearShell() {
 #ifdef linux
     system("clear");
 #elif _WIN32
@@ -26,33 +25,26 @@ int clearShell()
     @param fileName: The name of the last archive used to do a load
     @return: state of the function
 */
-int saveLastLoad(char *fileName)
-{
-    FILE *filePointer = fopen(fileName, "r"); // Open the archive
+int saveLastLoad(char *fileName) {
+    FILE *filePointer = fopen(fileName, "r");  // Open the archive
 
-    if (filePointer != NULL) // Verify if there's a next line
-    {
+    if (filePointer != NULL) {  // Verify if there's a next line
         struct Event *header = NULL;
 
-        while (!feof(filePointer)) // Verify if the archive is in the end
-        {
+        while (!feof(filePointer)) {  // Verify if the archive is in the end
             struct Event *currentEvent = header;
 
             int date, cardCode, gateCode;
             char eventType;
 
-            fscanf(filePointer, "%d;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType); // Get the data of the load
-            struct Event *event = newEvent(date, cardCode, gateCode, eventType);           // Creat a new pointer with the data
+            fscanf(filePointer, "%d;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
+            struct Event *event = newEvent(date, cardCode, gateCode, eventType);            // Creat a new pointer with the data
 
-            if (header == NULL)
-            {
-                header = event; // Get the new value of the header of the new dynamic list
-            }
-            else // Get the next values
-            {
+            if (header == NULL) {
+                header = event;  // Get the new value of the header of the new dynamic list
+            } else {             // Get the next values
                 struct Event *nextEvent = currentEvent->next;
-                while ((currentEvent->next != NULL) && (nextEvent->date < event->date))
-                {
+                while ((currentEvent->next != NULL) && (nextEvent->date < event->date)) {
                     currentEvent = currentEvent->next;
                     nextEvent = currentEvent->next;
                 }
@@ -60,14 +52,12 @@ int saveLastLoad(char *fileName)
                 currentEvent->next = event;
             }
         }
-        fclose(filePointer); // Close the file
-        writeData(&header, "../data/output/lastLoad.csv"); // Calls the functions to write the data
-        free(header); // Free the pointer
+        fclose(filePointer);                                // Close the file
+        writeData(&header, "../data/output/lastLoad.csv");  // Calls the functions to write the data
+        free(header);                                       // Free the pointer
 
         return 0;
-    }
-    else
-    {
+    } else {
         printf("Impossível abrir o arquivo.\n");
         return 1;
     }
@@ -79,16 +69,11 @@ int saveLastLoad(char *fileName)
     @param eventTwo: A pointer with the second term to compare
     @return: state of the function
 */
-int isEqualEvents(struct Event *eventOne, struct Event *eventTwo)
-{
-    if (eventOne->date == eventTwo->date)
-    {
-        if (eventOne->cardCode == eventTwo->cardCode)
-        {
-            if (eventOne->gateCode == eventTwo->gateCode)
-            {
-                if (eventOne->eventType == eventTwo->eventType)
-                {
+int isEqualEvents(struct Event *eventOne, struct Event *eventTwo) {
+    if (eventOne->date == eventTwo->date) {
+        if (eventOne->cardCode == eventTwo->cardCode) {
+            if (eventOne->gateCode == eventTwo->gateCode) {
+                if (eventOne->eventType == eventTwo->eventType) {
                     return 1;
                 }
             }
