@@ -11,4 +11,4 @@ struct Event;
 
 int dataLoad(struct Event **headerPointer, char *fileName);
 
-#endif //SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATALOAD_H
+#endif // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATALOAD_H

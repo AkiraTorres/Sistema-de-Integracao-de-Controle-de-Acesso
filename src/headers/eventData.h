@@ -6,14 +6,15 @@
 #ifndef SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H
 #define SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H
 
-struct Event {
+struct Event
+{
     int date;
     int cardCode;
     int gateCode;
     char eventType;
-    struct Event* next;
+    struct Event *next;
 };
 
-struct Event* newEvent(int date, int cardCode, int gateCode, char eventType);
+struct Event *newEvent(int date, int cardCode, int gateCode, char eventType);
 
-#endif  // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H
+#endif // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_EVENTDATA_H

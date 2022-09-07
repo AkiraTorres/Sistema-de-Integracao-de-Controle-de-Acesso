@@ -11,4 +11,4 @@ struct Event;
 
 int writeData(struct Event **headPointer, char *fileName);
 
-#endif //SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_WRITEDATA_H
+#endif // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_WRITEDATA_H

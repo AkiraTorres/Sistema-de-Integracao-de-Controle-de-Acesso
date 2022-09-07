@@ -11,4 +11,4 @@ struct Event;
 
 int dataByCard(struct Event **headerPointer, struct Event **headerReportByCard, int cardID);
 
-#endif  // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATABYCARD_H
+#endif // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_DATABYCARD_H

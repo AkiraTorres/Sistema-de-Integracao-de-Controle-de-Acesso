@@ -11,4 +11,4 @@ struct Event;
 
 int loadLog(struct Event **headerPointer);
 
-#endif //SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_LOADLOG_H
+#endif // SISTEMA_DE_INTEGRACAO_DE_CONTROLE_DE_ACESSO_LOADLOG_H
