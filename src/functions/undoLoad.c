@@ -24,10 +24,11 @@ int undoLoad(struct Event **headerPointer) {
             struct Event *current = *headerPointer;  // Creat a new pointer for the header
             struct Event *previous = NULL;           // Creat a new pointer for the previous data
 
-            int date, cardCode, gateCode;
+            long int date;
+            int cardCode, gateCode;
             char eventType;
 
-            fscanf(pontLastLoad, "%i;%i;%i;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
+            fscanf(pontLastLoad, "%li;%i;%i;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
 
             struct Event *currentLine = newEvent(date, cardCode, gateCode, eventType);  // Creat a new pointer with the data
 

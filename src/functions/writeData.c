@@ -18,16 +18,18 @@ int writeData(struct Event **headPointer, char *fileName) {
 
         struct Event *currentEvent = *headPointer;  // Creat a new pointer for the header
 
-        while (currentEvent->next != NULL) {                                                                      // Verify if there's a next event
-            int date = currentEvent->date, cardCode = currentEvent->cardCode, gateCode = currentEvent->gateCode;  // Get the data of the load
-            char eventType = currentEvent->eventType;                                                             // Get the data of the load
-            fprintf(filePointer, "%i;%i;%i;%c\n", date, cardCode, gateCode, eventType);                           // Write the data formate
+        while (currentEvent->next != NULL) {  // Verify if there's a next event
+            long int date = currentEvent->date;
+            int cardCode = currentEvent->cardCode, gateCode = currentEvent->gateCode;     // Get the data of the load
+            char eventType = currentEvent->eventType;                                     // Get the data of the load
+            fprintf(filePointer, "%li;%i;%i;%c\n", date, cardCode, gateCode, eventType);  // Write the data formate
             currentEvent = currentEvent->next;
         }
         //(EndLine)
-        int date = currentEvent->date, cardCode = currentEvent->cardCode, gateCode = currentEvent->gateCode;  // Get the data of the load
-        char eventType = currentEvent->eventType;                                                             // Get the data of the load
-        fprintf(filePointer, "%i;%i;%i;%c\n", date, cardCode, gateCode, eventType);                           // Write the data formate
+        long int date = currentEvent->date;
+        int cardCode = currentEvent->cardCode, gateCode = currentEvent->gateCode;     // Get the data of the load
+        char eventType = currentEvent->eventType;                                     // Get the data of the load
+        fprintf(filePointer, "%li;%i;%i;%c\n", date, cardCode, gateCode, eventType);  // Write the data formate
 
         fclose(filePointer);  // Close file
         return 0;

@@ -34,11 +34,12 @@ int saveLastLoad(char *fileName) {
         while (!feof(filePointer)) {  // Verify if the archive is in the end
             struct Event *currentEvent = header;
 
-            int date, cardCode, gateCode;
+            long int date;
+            int cardCode, gateCode;
             char eventType;
 
-            fscanf(filePointer, "%d;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
-            struct Event *event = newEvent(date, cardCode, gateCode, eventType);            // Creat a new pointer with the data
+            fscanf(filePointer, "%li;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
+            struct Event *event = newEvent(date, cardCode, gateCode, eventType);             // Creat a new pointer with the data
 
             if (header == NULL) {
                 header = event;  // Get the new value of the header of the new dynamic list
@@ -81,4 +82,21 @@ int isEqualEvents(struct Event *eventOne, struct Event *eventTwo) {
     }
 
     return 0;
+}
+
+int alreadyExists(struct Event **headPointer, struct Event *newEvent) {
+    if (*headPointer != NULL) {
+        struct Event *currentEvent = *headPointer;
+
+        while (currentEvent->next != NULL) {
+            if (isEqualEvents(currentEvent, newEvent)) {
+                return 1;
+            }
+            currentEvent = currentEvent->next;
+        }
+        if (isEqualEvents(currentEvent, newEvent)) {
+            return 1;
+        }
+        return 0;
+    }
 }

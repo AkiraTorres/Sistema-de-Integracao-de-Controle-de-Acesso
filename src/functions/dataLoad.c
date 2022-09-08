@@ -3,6 +3,7 @@
 
 // Imports modules
 #include "../headers/eventData.h"
+#include "../headers/genericFunctions.h"
 
 struct Event;  // Extends the struct for the module
 
@@ -19,22 +20,25 @@ int dataLoad(struct Event **headerPointer, char *fileName) {
         while (!feof(filePointer)) {                      // Verify if the archive is in the end
             struct Event *currentEvent = *headerPointer;  // Creat a new pointer for the header
 
-            int date, cardCode, gateCode;
+            long int date;
+            int cardCode, gateCode;
             char eventType;
 
-            fscanf(filePointer, "%d;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
-            struct Event *event = newEvent(date, cardCode, gateCode, eventType);            // Creat a new pointer with the data
+            fscanf(filePointer, "%li;%d;%d;%c\n", &date, &cardCode, &gateCode, &eventType);  // Get the data of the load
+            struct Event *event = newEvent(date, cardCode, gateCode, eventType);             // Creat a new pointer with the data
 
-            if (*headerPointer == NULL) {
-                *headerPointer = event;  // Get the new value of the header of the new dynamic list
-            } else {                     // Get the next values
-                struct Event *nextEvent = currentEvent->next;
-                while ((currentEvent->next != NULL) && (nextEvent->date < event->date)) {  // Verify if there's a next event and the position of the data
-                    currentEvent = currentEvent->next;
-                    nextEvent = currentEvent->next;
+            if (!(alreadyExists(headerPointer, event))) {
+                if (*headerPointer == NULL) {
+                    *headerPointer = event;  // Get the new value of the header of the new dynamic list
+                } else {                     // Get the next values
+                    struct Event *nextEvent = currentEvent->next;
+                    while ((currentEvent->next != NULL) && (nextEvent->date < event->date)) {  // Verify if there's a next event and the position of the data
+                        currentEvent = currentEvent->next;
+                        nextEvent = currentEvent->next;
+                    }
+                    event->next = currentEvent->next;
+                    currentEvent->next = event;
                 }
-                event->next = currentEvent->next;
-                currentEvent->next = event;
             }
         }
 
